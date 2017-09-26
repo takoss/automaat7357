@@ -7,17 +7,7 @@ import static org.junit.Assert.fail;
 /**
  * Created by admin on 14.09.2017.
  */
-public class APIRequestTest {
-
-//    @BeforeClass
-//    void setUpAllTests() {
-//
-//    }
-
-//    @Before
-//    void setUpTest() {
-//
-//    }
+class APIRequestTest {
 
     @Test
     void testAPIConnects() {
@@ -26,6 +16,16 @@ public class APIRequestTest {
 
     @Test
     void testAPIKeyAccepted() {
+        fail();
+    }
+
+    @Test
+    void testAPICurrentWeatherResponseValid() {
+        fail();
+    }
+
+    @Test
+    void testAPIForecastResponseValid() {
         fail();
     }
 

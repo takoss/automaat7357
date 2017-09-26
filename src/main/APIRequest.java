@@ -5,8 +5,6 @@ package main;
  */
 public class APIRequest {
 
-
-
     public static void main(String[] args) {
 
     }
