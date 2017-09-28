@@ -1,11 +1,13 @@
 package main;
 
 /**
- * Created by admin on 14.09.2017.
+ * Created by admin on 28.09.2017.
  */
-public class APIRequest {
+public interface APIRequest {
 
-    public static void main(String[] args) {
+    WeatherReport getCurrentWeather(String location);
 
-    }
+    WeatherReport getForecastWeather(String location);
+
+    WeatherReport getFullWeatherReport(String location);
 }
