@@ -4,8 +4,12 @@ import junit.framework.TestCase;
 import main.APIRequest;
 import main.OpenWeatherRequest;
 import main.WeatherReport;
+import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.net.UnknownHostException;
 
 import static org.junit.Assert.fail;
 
@@ -15,23 +19,44 @@ import static org.junit.Assert.fail;
 class OpenWeatherRequestTest {
 
     @Test
-    void testAPIConnects() {
+    void testAPIIPAddressDetermined() {
+        try {
+            OpenWeatherRequest request = new OpenWeatherRequest();
+            request.getCurrentWeatherReport("Tallinn", OpenWeatherRequest.getKey());
+        } catch (IOException e) {
+            if (e instanceof UnknownHostException) {
+                fail();
+            }
+        } catch (JSONException e) {}
+    }
+
+    @Test
+    void testAPIJSONProcessingSuccessful() {
+        try {
+            new OpenWeatherRequest().getCurrentWeatherReport("Tallinn", OpenWeatherRequest.getKey());
+        } catch (JSONException e) {
+            fail();
+        } catch (IOException e) {}
+    }
+
+    @Test
+    void testAPIFalseKeyRejected() {
+        try {
+            new OpenWeatherRequest().getCurrentWeatherReport("Tallinn", "ooooooo");
+        } catch (IOException e) {
+            return;
+        } catch (JSONException e) {}
+
         fail();
     }
 
     @Test
     void testAPIKeyAccepted() {
-        fail();
-    }
-
-    @Test
-    void testAPICurrentWeatherResponseValid() {
-        fail();
-    }
-
-    @Test
-    void testAPIForecastResponseValid() {
-        fail();
+        try {
+            new OpenWeatherRequest().getCurrentWeatherReport("Tallinn", OpenWeatherRequest.getKey());
+        } catch (IOException e) {
+            fail();
+        } catch (JSONException e) {}
     }
 
     @Test
@@ -40,12 +65,14 @@ class OpenWeatherRequestTest {
     }
 
     @Test
-    void testQueryGetsCorrectCoordinatesforTallinn() {
+    void testQueryGetsCorrectUnroundedCoordinatesforTallinn() {
         APIRequest request = new OpenWeatherRequest();
         WeatherReport weatherReport = request.getFullWeatherReport("Tallinn");
-        Assert.assertTrue(59 == weatherReport.getCoordinates().getLatitude()
+        System.out.println(weatherReport.getCoordinate().getLatitude());
+        System.out.println(weatherReport.getCoordinate().getLongitude());
+        Assert.assertTrue(59 == weatherReport.getCoordinate().getLatitude()
                 .intValue());
-        Assert.assertTrue(24 == weatherReport.getCoordinates().getLongitude
+        Assert.assertTrue(24 == weatherReport.getCoordinate().getLongitude
                 ().intValue());
     }
 
@@ -57,18 +84,20 @@ class OpenWeatherRequestTest {
             Validator.validateAllTemperatures(report);
         } catch (Exception e) {
             e.printStackTrace();
-            TestCase.fail();
+            fail();
         }
     }
 
     @Test
-    void testQueryGetsCorrectCoordinatesForCapeTown() {
+    void testQueryGetsCorrectUnroundedCoordinatesForCapeTown() {
         APIRequest request = new OpenWeatherRequest();
         WeatherReport weatherReport = request.getFullWeatherReport(
                 "Cape Town");
-        Assert.assertTrue(18 == weatherReport.getCoordinates().getLatitude()
+        System.out.println(weatherReport.getCoordinate().getLatitude());
+        System.out.println(weatherReport.getCoordinate().getLongitude());
+        Assert.assertTrue(-33 == weatherReport.getCoordinate().getLatitude()
                 .intValue());
-        Assert.assertTrue(-33 == weatherReport.getCoordinates().getLongitude
+        Assert.assertTrue(18 == weatherReport.getCoordinate().getLongitude
                 ().intValue());
     }
 
@@ -83,4 +112,5 @@ class OpenWeatherRequestTest {
             TestCase.fail();
         }
     }
+
 }

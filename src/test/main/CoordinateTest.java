@@ -15,6 +15,7 @@ public class CoordinateTest {
     void testGetCoordinateAddsZerosToTheFrontIfNotThreeChars() {
         Coordinate coord = new Coordinate(new BigDecimal("4"), new
                 BigDecimal(0));
+        System.out.println(coord.getFormattedCoordinates());
         Assert.assertTrue("004:000".equals(coord.getFormattedCoordinates()));
     }
 

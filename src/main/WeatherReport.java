@@ -1,26 +1,32 @@
 package main;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Created by admin on 28.09.2017.
  */
 public class WeatherReport {
-    private Coordinate coordinates;
+
+    private Coordinate coordinate;
 
     private Temperature currTemperature;
+
+    private List<String> threeDayDateStrings;
 
     private List<Temperature> forecastThreeDayHighTemps;
 
     private List<Temperature> forecastThreeDayLowTemps;
 
-    public Coordinate getCoordinates() {
-        return coordinates;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     public Temperature getCurrTemperature() {
         return currTemperature;
+    }
+
+    public List<String> getThreeDayDateStrings() {
+        return threeDayDateStrings;
     }
 
     public List<Temperature> getForecastThreeDayHighTemps() {
@@ -31,12 +37,16 @@ public class WeatherReport {
         return forecastThreeDayLowTemps;
     }
 
-    public void setCoordinates(Coordinate coordinates) {
-        this.coordinates = coordinates;
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public void setCurrTemperature(Temperature currTemperature) {
         this.currTemperature = currTemperature;
+    }
+
+    public void setThreeDayDateStrings(List<String> threeDayDateStrings) {
+        this.threeDayDateStrings = threeDayDateStrings;
     }
 
     public void setForecastThreeDayHighTemps(List<Temperature> forecastThreeDayHighTemps) {
@@ -47,16 +57,17 @@ public class WeatherReport {
         this.forecastThreeDayLowTemps = forecastThreeDayLowTemps;
     }
 
-    public static Temperature getAverageTemperature(List<Temperature> temps) {
-        return new Temperature(new BigDecimal(50), Temperature.CELSIUS);
-    }
+    public static WeatherReport generateMergedCurrAndForecastWeatherReports(
+            WeatherReport current, WeatherReport forecast) {
+        WeatherReport newReport = new WeatherReport();
 
-    public Temperature getThreeDayAverageLowTemp() {
-        return new Temperature(new BigDecimal(-5), Temperature.CELSIUS);
-    }
+        newReport.coordinate = current.getCoordinate();
+        newReport.currTemperature = current.getCurrTemperature();
+        newReport.threeDayDateStrings = forecast.getThreeDayDateStrings();
+        newReport.forecastThreeDayHighTemps = forecast.getForecastThreeDayHighTemps();
+        newReport.forecastThreeDayLowTemps = forecast.getForecastThreeDayLowTemps();
 
-    public Temperature getThreeDayAverageHighTemp() {
-        return new Temperature(new BigDecimal(100), Temperature.CELSIUS);
+        return newReport;
     }
 
 }

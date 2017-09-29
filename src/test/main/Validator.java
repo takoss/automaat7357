@@ -32,24 +32,34 @@ public class Validator {
         Validator.validateListOfTemperatures(report.getForecastThreeDayHighTemps());
         Validator.validateListOfTemperatures(report.getForecastThreeDayLowTemps());
 
-        Validator.validateHighAndLowTemp(report.getThreeDayAverageHighTemp(), report.getThreeDayAverageLowTemp());
+        Validator.validateHighAndLowTempLists(report.getForecastThreeDayHighTemps(),
+                report.getForecastThreeDayLowTemps());
     }
 
-    static void validateTemperature(Temperature temp) throws Exception {
+    private static void validateTemperature(Temperature temp) throws Exception {
         if (temp.getCelsius().compareTo(new BigDecimal("-95")) == -1
             || temp.getCelsius().compareTo(new BigDecimal("65")) == 1) {
-            throw new Exception("Invalid latitude");
+            throw new Exception("Invalid temperature: " + temp.getCelsius());
         }
     }
 
-    static void validateHighAndLowTemp(Temperature high, Temperature low) throws Exception {
+    private static void validateHighAndLowTempLists(List<Temperature> highs, List<Temperature> lows) throws Exception {
+        if (highs.size() != lows.size()) throw new Exception("High and low lists not the same length!");
+
+        for (int i = 0; i < highs.size(); ++i) {
+            validateHighAndLowTempPair(highs.get(i), lows.get(i));
+        }
+    }
+
+    private static void validateHighAndLowTempPair(Temperature high, Temperature low) throws Exception {
+        System.out.println("high" + high.getCelsius() + ", low: " + low.getCelsius());
         if (high.getCelsius().compareTo(low.getCelsius()) == -1) throw new Exception("Low temp higher than high temp");
 
         validateTemperature(high);
         validateTemperature(low);
     }
 
-    static void validateListOfTemperatures(List<Temperature> temps)
+    private static void validateListOfTemperatures(List<Temperature> temps)
             throws Exception {
         for (Temperature temp : temps) {
             validateTemperature(temp);
