@@ -1,12 +1,9 @@
 package main;
 
-import javax.print.attribute.standard.Destination;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -27,7 +24,7 @@ public class Controller {
             WeatherReport report = request.getFullWeatherReport(nextLine);
             if (report == null) continue;
 
-            System.out.println(report);
+            System.out.print(report);
         }
     }
 
@@ -41,11 +38,14 @@ public class Controller {
             OpenWeatherRequest request = new OpenWeatherRequest();
             Stream<WeatherReport> reports = cityList.map(request::getFullWeatherReport);
 
-
-            writer.append("something");
-
-
-            writer.close();
+            reports.forEach(report -> {
+                try {
+                    if (report == null) writer.append("Location not found.\n");
+                    else writer.append(report.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
         }
 
     }
@@ -67,8 +67,8 @@ public class Controller {
     }
 
     public static void main(String[] args) {
-        //printInputCitiesInfoToOutput();
-        weatherRequestLoop();
+        printInputCitiesInfoToOutput();
+        //weatherRequestLoop();
     }
 
 }

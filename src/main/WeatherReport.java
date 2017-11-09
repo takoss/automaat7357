@@ -75,7 +75,6 @@ public class WeatherReport {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
-        System.out.println(this.cityName);
     }
 
     public String getCityName() {
@@ -83,7 +82,6 @@ public class WeatherReport {
     }
 
     public String toString() {
-        System.out.println(this.cityName);
         String str = this.cityName + "\n"
                 + "Coordinates (N:E): " + this.getCoordinate().getFormattedCoordinates() + "\n"
                 + "Current temperature: " + this.getCurrTemperature().getCelsius() + " Celsius\n";
@@ -94,6 +92,6 @@ public class WeatherReport {
                    this.getForecastThreeDayHighTemps().get(i).getCelsius() + "\n";
         }
 
-        return str;
+        return str + "\n";
     }
 }
