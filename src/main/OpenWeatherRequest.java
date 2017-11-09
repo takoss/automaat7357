@@ -31,8 +31,11 @@ public class OpenWeatherRequest implements APIRequest {
 
         WeatherReport currentReport = new WeatherReport();
 
+        currentReport.setCityName(json.getString("name"));
+
         currentReport.setCurrTemperature(new Temperature(new BigDecimal(json.getJSONObject("main").get("temp").toString()),
                 Temperature.KELVIN));
+
 
         JSONObject coords = json.getJSONObject("coord");
         BigDecimal latitude = new BigDecimal(coords.get("lat").toString());
@@ -49,6 +52,8 @@ public class OpenWeatherRequest implements APIRequest {
         );
 
         WeatherReport forecastReport = new WeatherReport();
+
+        forecastReport.setCityName(json.getJSONObject("city").getString("name"));
 
         JSONObject coord = json.getJSONObject("city").getJSONObject("coord");
         BigDecimal latitude = new BigDecimal(coord.get("lat").toString());
@@ -134,10 +139,6 @@ public class OpenWeatherRequest implements APIRequest {
 
     public static String getKey() {
         return KEY;
-    }
-
-    public static void main(String[] args) {
-
     }
 
 }

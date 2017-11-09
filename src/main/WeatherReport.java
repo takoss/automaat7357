@@ -17,6 +17,8 @@ public class WeatherReport {
 
     private List<Temperature> forecastThreeDayLowTemps;
 
+    private String cityName;
+
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -61,6 +63,7 @@ public class WeatherReport {
             WeatherReport current, WeatherReport forecast) {
         WeatherReport newReport = new WeatherReport();
 
+        newReport.cityName = current.getCityName();
         newReport.coordinate = current.getCoordinate();
         newReport.currTemperature = current.getCurrTemperature();
         newReport.threeDayDateStrings = forecast.getThreeDayDateStrings();
@@ -70,4 +73,27 @@ public class WeatherReport {
         return newReport;
     }
 
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+        System.out.println(this.cityName);
+    }
+
+    public String getCityName() {
+        return this.cityName;
+    }
+
+    public String toString() {
+        System.out.println(this.cityName);
+        String str = this.cityName + "\n"
+                + "Coordinates (N:E): " + this.getCoordinate().getFormattedCoordinates() + "\n"
+                + "Current temperature: " + this.getCurrTemperature().getCelsius() + " Celsius\n";
+
+        for (int i = 0; i < 3; ++i) {
+            str += this.getThreeDayDateStrings().get(i) + "  " +
+                   this.getForecastThreeDayLowTemps().get(i).getCelsius() + "  " +
+                   this.getForecastThreeDayHighTemps().get(i).getCelsius() + "\n";
+        }
+
+        return str;
+    }
 }
