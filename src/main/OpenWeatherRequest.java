@@ -1,16 +1,12 @@
 package main;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by admin on 14.09.2017.
@@ -30,78 +26,19 @@ public class OpenWeatherRequest implements APIRequest {
         );
 
         WeatherReport currentReport = new WeatherReport();
-
-        currentReport.setCityName(json.getString("name"));
-
-        currentReport.setCurrTemperature(new Temperature(new BigDecimal(json.getJSONObject("main").get("temp").toString()),
-                Temperature.KELVIN));
-
-
-        JSONObject coords = json.getJSONObject("coord");
-        BigDecimal latitude = new BigDecimal(coords.get("lat").toString());
-        BigDecimal longitude = new BigDecimal(coords.get("lon").toString());
-        currentReport.setCoordinate(new Coordinate(latitude, longitude));
-
+        CurrentWeatherSetter.setInformationForWeatherReport(json, currentReport);
         return currentReport;
     }
 
     @Override
     public WeatherReport getForecastWeatherReport(String location, String key) throws IOException, JSONException {
         JSONObject json = new JSONObject(org.apache.commons.io.IOUtils.toString(
-                new URL(getAPIRequestLink(FORECAST, location, key)), Charset.forName("UTF-8"))
+                new URL(OpenWeatherRequest.getAPIRequestLink
+                        (OpenWeatherRequest.FORECAST, location, key)), Charset.forName("UTF-8"))
         );
 
         WeatherReport forecastReport = new WeatherReport();
-
-        forecastReport.setCityName(json.getJSONObject("city").getString("name"));
-
-        JSONObject coord = json.getJSONObject("city").getJSONObject("coord");
-        BigDecimal latitude = new BigDecimal(coord.get("lat").toString());
-        BigDecimal longitude = new BigDecimal(coord.get("lon").toString());
-        forecastReport.setCoordinate(new Coordinate(latitude, longitude));
-
-        JSONArray jsonArray = json.getJSONArray("list");
-
-        forecastReport.setForecastThreeDayHighTemps(new ArrayList<>());
-        forecastReport.setForecastThreeDayLowTemps(new ArrayList<>());
-        forecastReport.setThreeDayDateStrings(new ArrayList<>());
-
-        Temperature dayLow = new Temperature(new BigDecimal(9000), Temperature.KELVIN);
-        Temperature dayHigh = new Temperature(new BigDecimal(0), Temperature.KELVIN);
-        forecastReport.getThreeDayDateStrings().add(jsonArray.getJSONObject(0)
-                .get("dt_txt").toString().substring(0, 10));
-
-        String dateString;
-        JSONObject mainObject;
-        int entry = 0;
-        while (true) {
-            mainObject = jsonArray.getJSONObject(entry).getJSONObject("main");
-            dateString = jsonArray.getJSONObject(entry).get("dt_txt").toString().substring(0, 10);
-
-            if (forecastReport.getThreeDayDateStrings().get(forecastReport.getThreeDayDateStrings().size() - 1)
-                    .equals(dateString)) {
-
-                if (dayLow.getKelvin().compareTo(new BigDecimal(mainObject.get("temp_min").toString())) == 1) {
-                    dayLow = new Temperature(new BigDecimal(mainObject.get("temp_min").toString()), Temperature.KELVIN);
-                }
-
-                if (dayHigh.getKelvin().compareTo(new BigDecimal(mainObject.get("temp_max").toString())) == -1) {
-                    dayHigh = new Temperature(new BigDecimal(mainObject.get("temp_max").toString()),
-                            Temperature.KELVIN);
-                }
-                ++entry;
-            } else {
-                forecastReport.getForecastThreeDayLowTemps().add(dayLow);
-                forecastReport.getForecastThreeDayHighTemps().add(dayHigh);
-
-                if (forecastReport.getThreeDayDateStrings().size() == 3) break;
-                forecastReport.getThreeDayDateStrings().add(dateString);
-
-                dayLow = new Temperature(new BigDecimal(9000), Temperature.KELVIN);
-                dayHigh = new Temperature(new BigDecimal(0), Temperature.KELVIN);
-            }
-        }
-
+        ForecastWeatherSetter.setInformationForWeatherReport(json, forecastReport);
         return forecastReport;
     }
 
@@ -133,11 +70,11 @@ public class OpenWeatherRequest implements APIRequest {
             case FORECAST:
                 return baseURL + "forecast?q=" + location + "&APPID=" + key;
             default:
-                throw new RuntimeException("Invalid type");
+                throw new RuntimeException("Invalid weather type");
         }
     }
 
-    public static String getKey() {
+    static String getKey() {
         return KEY;
     }
 

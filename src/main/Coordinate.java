@@ -7,31 +7,29 @@ import java.math.BigDecimal;
  */
 public class Coordinate {
 
-    private BigDecimal longitude;
+    private BigDecimal longitude, latitude;
 
-    private BigDecimal latitude;
-
-    public Coordinate(BigDecimal latitude, BigDecimal longitude) {
+    Coordinate(BigDecimal latitude, BigDecimal longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public String getFormattedCoordinates() {
-        int latitude = bigDecimalRoundedToInt(this.latitude);
-        int longitude = bigDecimalRoundedToInt(this.longitude);
+    String getFormattedCoordinates() {
+        int latitude = roundBigDecimaltoInt(this.latitude);
+        int longitude = roundBigDecimaltoInt(this.longitude);
         return String.format("%03d:%03d", latitude, longitude);
     }
 
-    public BigDecimal getLongitude() {
+    BigDecimal getLongitude() {
         return longitude;
     }
 
-    public BigDecimal getLatitude() {
+    BigDecimal getLatitude() {
         return latitude;
     }
 
-    private static int bigDecimalRoundedToInt(BigDecimal bd) {
-        if (bd.compareTo(new BigDecimal(0)) == -1) {
+    private static int roundBigDecimaltoInt(BigDecimal bd) {
+        if (bd.compareTo(new BigDecimal(0)) < 0) {
             return bd.subtract(new BigDecimal("0.5")).intValue();
         }
 

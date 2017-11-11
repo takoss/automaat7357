@@ -19,47 +19,47 @@ public class WeatherReport {
 
     private String cityName;
 
-    public Coordinate getCoordinate() {
+    Coordinate getCoordinate() {
         return coordinate;
     }
 
-    public Temperature getCurrTemperature() {
+    Temperature getCurrTemperature() {
         return currTemperature;
     }
 
-    public List<String> getThreeDayDateStrings() {
+    List<String> getThreeDayDateStrings() {
         return threeDayDateStrings;
     }
 
-    public List<Temperature> getForecastThreeDayHighTemps() {
+    List<Temperature> getForecastThreeDayHighTemps() {
         return forecastThreeDayHighTemps;
     }
 
-    public List<Temperature> getForecastThreeDayLowTemps() {
+    List<Temperature> getForecastThreeDayLowTemps() {
         return forecastThreeDayLowTemps;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
+    void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
 
-    public void setCurrTemperature(Temperature currTemperature) {
+    void setCurrTemperature(Temperature currTemperature) {
         this.currTemperature = currTemperature;
     }
 
-    public void setThreeDayDateStrings(List<String> threeDayDateStrings) {
+    void setThreeDayDateStrings(List<String> threeDayDateStrings) {
         this.threeDayDateStrings = threeDayDateStrings;
     }
 
-    public void setForecastThreeDayHighTemps(List<Temperature> forecastThreeDayHighTemps) {
+    void setForecastThreeDayHighTemps(List<Temperature> forecastThreeDayHighTemps) {
         this.forecastThreeDayHighTemps = forecastThreeDayHighTemps;
     }
 
-    public void setForecastThreeDayLowTemps(List<Temperature> forecastThreeDayLowTemps) {
+    void setForecastThreeDayLowTemps(List<Temperature> forecastThreeDayLowTemps) {
         this.forecastThreeDayLowTemps = forecastThreeDayLowTemps;
     }
 
-    public static WeatherReport generateMergedCurrAndForecastWeatherReports(
+    static WeatherReport generateMergedCurrAndForecastWeatherReports(
             WeatherReport current, WeatherReport forecast) {
         WeatherReport newReport = new WeatherReport();
 
@@ -73,14 +73,15 @@ public class WeatherReport {
         return newReport;
     }
 
-    public void setCityName(String cityName) {
+    void setCityName(String cityName) {
         this.cityName = cityName;
     }
 
-    public String getCityName() {
+    String getCityName() {
         return this.cityName;
     }
 
+    @Override
     public String toString() {
         String str = this.cityName + "\n"
                 + "Coordinates (N:E): " + this.getCoordinate().getFormattedCoordinates() + "\n"

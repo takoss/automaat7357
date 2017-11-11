@@ -1,17 +1,9 @@
-package test.main;
+package main;
 
-import main.Coordinate;
-import main.Temperature;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static main.Temperature.CELSIUS;
-import static main.Temperature.KELVIN;
 
 /**
  * Created by admin on 28.09.2017.
@@ -19,7 +11,7 @@ import static main.Temperature.KELVIN;
 public class TemperatureTest {
 
     @Test
-    void testGetKelvinCorrectWithZeroCelsius() {
+    public void testGetKelvinCorrectWithZeroCelsius() {
         Temperature temp = new Temperature(new BigDecimal(0),
                 Temperature.CELSIUS);
         Assert.assertTrue(new BigDecimal("273.15")
@@ -27,7 +19,7 @@ public class TemperatureTest {
     }
 
     @Test
-    void testGetKelvinCorrectWithPositiveCelsius() {
+    public void testGetKelvinCorrectWithPositiveCelsius() {
         Temperature temp = new Temperature(new BigDecimal(200),
                 Temperature.CELSIUS);
         Assert.assertTrue(new BigDecimal("473.15")
@@ -35,7 +27,7 @@ public class TemperatureTest {
     }
 
     @Test
-    void testGetKelvinCorrectWithNegativeCelsius() {
+    public void testGetKelvinCorrectWithNegativeCelsius() {
         Temperature temp = new Temperature(new BigDecimal(-250),
                 Temperature.CELSIUS);
         Assert.assertTrue(new BigDecimal("23.15")
@@ -43,7 +35,7 @@ public class TemperatureTest {
     }
 
     @Test
-    void testGetCelsiusCorrectWithTwoHundredKelvin() {
+    public void testGetCelsiusCorrectWithTwoHundredKelvin() {
         Temperature temp = new Temperature(new BigDecimal(200),
                 Temperature.KELVIN);
         System.out.println(temp.getCelsius());

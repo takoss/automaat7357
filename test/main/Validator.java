@@ -1,8 +1,4 @@
-package test.main;
-
-import main.Coordinate;
-import main.Temperature;
-import main.WeatherReport;
+package main;
 
 import java.math.BigDecimal;
 import java.util.List;

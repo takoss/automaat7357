@@ -28,11 +28,11 @@ public class Controller {
         }
     }
 
-    public static Stream<String> readCitiesStreamFromFile(String url) throws IOException {
+    private static Stream<String> readCitiesStreamFromFile(String url) throws IOException {
         return Files.lines(Paths.get(url));
     }
 
-    public static void writeCityToOutputFile(Stream<String> cityList, String outputUrl) throws IOException {
+    private static void writeCityToOutputFile(Stream<String> cityList, String outputUrl) throws IOException {
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(outputUrl), "utf-8"))) {
             OpenWeatherRequest request = new OpenWeatherRequest();
@@ -40,7 +40,7 @@ public class Controller {
 
             reports.forEach(report -> {
                 try {
-                    if (report == null) writer.append("Location not found.\n");
+                    if (report == null) writer.append("Location not found.\n\n");
                     else writer.append(report.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -50,7 +50,7 @@ public class Controller {
 
     }
 
-    public static void printInputCitiesInfoToOutput() {
+    private static void printInputCitiesInfoToOutput() {
         Stream<String> cities = Stream.empty();
         try {
             cities =readCitiesStreamFromFile("input.txt");
