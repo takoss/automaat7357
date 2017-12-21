@@ -1,11 +1,17 @@
-package main;
+package weathergetter.weatherreport;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import weathergetter.weatherreport.Coordinate;
+import weathergetter.weatherreport.Temperature;
+import weathergetter.weatherreport.WeatherReport;
 
 import java.math.BigDecimal;
 
-class CurrentWeatherSetter {
-    static void setInformationForWeatherReport(JSONObject json, WeatherReport currentReport) {
+public class CurrentWeatherSetter {
+
+    public static void setInformationForWeatherReport(JSONObject json,
+                                                WeatherReport currentReport) throws JSONException {
         currentReport.setCityName(json.getString("name"));
 
         currentReport.setCurrTemperature(new Temperature(new BigDecimal(json.getJSONObject("main").get("temp").toString()),

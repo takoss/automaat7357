@@ -1,9 +1,12 @@
-package main;
+package weathergetter.weatherreport;
 
 import junit.framework.TestCase;
+import weathergetter.api.APIRequest;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Test;
+import weathergetter.api.openweatherrequest.GetWeatherReport;
+import weathergetter.api.openweatherrequest.ServerJSONRequest;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -13,13 +16,13 @@ import static org.junit.Assert.fail;
 /**
  * Created by admin on 14.09.2017.
  */
-public class OpenWeatherRequestTest {
+public class GetWeatherReportTest {
 
     @Test
     public void testAPIIPAddressDetermined() {
         try {
-            OpenWeatherRequest request = new OpenWeatherRequest();
-            request.getCurrentWeatherReport("Tallinn", OpenWeatherRequest.getKey());
+            GetWeatherReport request = new GetWeatherReport(new ServerJSONRequest());
+            request.getCurrentWeatherReport("Tallinn");
         } catch (IOException e) {
             if (e instanceof UnknownHostException) {
                 fail();
@@ -30,7 +33,7 @@ public class OpenWeatherRequestTest {
     @Test
     public void testAPIJSONProcessingSuccessful() {
         try {
-            new OpenWeatherRequest().getCurrentWeatherReport("Tallinn", OpenWeatherRequest.getKey());
+            new GetWeatherReport(new ServerJSONRequest()).getCurrentWeatherReport("Tallinn");
         } catch (JSONException e) {
             fail();
         } catch (IOException e) {}
@@ -39,7 +42,8 @@ public class OpenWeatherRequestTest {
     @Test
     public void testAPIFalseKeyRejected() {
         try {
-            new OpenWeatherRequest().getCurrentWeatherReport("Tallinn", "ooooooo");
+            new GetWeatherReport(new ServerJSONRequest("oooooooo"))
+                    .getCurrentWeatherReport("Tallinn");
         } catch (IOException e) {
             return;
         } catch (JSONException e) {}
@@ -50,7 +54,7 @@ public class OpenWeatherRequestTest {
     @Test
     public void testAPIKeyAccepted() {
         try {
-            new OpenWeatherRequest().getCurrentWeatherReport("Tallinn", OpenWeatherRequest.getKey());
+            new GetWeatherReport(new ServerJSONRequest()).getCurrentWeatherReport("Tallinn");
         } catch (IOException e) {
             fail();
         } catch (JSONException e) {}
@@ -58,12 +62,13 @@ public class OpenWeatherRequestTest {
 
     @Test
     public void testGetWeatherNotExistingCityRequestReturnsNull() {
-        Assert.assertTrue(new OpenWeatherRequest().getFullWeatherReport("aaepfokaefaef") == null);
+        Assert.assertTrue(new GetWeatherReport(new ServerJSONRequest()).getFullWeatherReport
+                ("aaepfokaefaef") == null);
     }
 
     @Test
     public void testQueryGetsCorrectUnroundedCoordinatesforTallinn() {
-        APIRequest request = new OpenWeatherRequest();
+        APIRequest request = new GetWeatherReport(new ServerJSONRequest());
         WeatherReport weatherReport = request.getFullWeatherReport("Tallinn");
         System.out.println(weatherReport.getCoordinate().getLatitude());
         System.out.println(weatherReport.getCoordinate().getLongitude());
@@ -75,7 +80,7 @@ public class OpenWeatherRequestTest {
 
     @Test
     public void testQueryGetsValidTemperaturesForTallinn() {
-        APIRequest request = new OpenWeatherRequest();
+        APIRequest request = new GetWeatherReport(new ServerJSONRequest());
         WeatherReport report = request.getFullWeatherReport("Tallinn");
         try {
             Validator.validateAllTemperatures(report);
@@ -87,7 +92,7 @@ public class OpenWeatherRequestTest {
 
     @Test
     public void testQueryGetsCorrectUnroundedCoordinatesForCapeTown() {
-        APIRequest request = new OpenWeatherRequest();
+        APIRequest request = new GetWeatherReport(new ServerJSONRequest());
         WeatherReport weatherReport = request.getFullWeatherReport(
                 "Cape Town");
         System.out.println(weatherReport.getCoordinate().getLatitude());
@@ -100,7 +105,7 @@ public class OpenWeatherRequestTest {
 
     @Test
     public void testQueryGetsValidTemperaturesForCapeTown() {
-        APIRequest request = new OpenWeatherRequest();
+        APIRequest request = new GetWeatherReport(new ServerJSONRequest());
         WeatherReport report = request.getFullWeatherReport("Cape Town");
         try {
             Validator.validateAllTemperatures(report);

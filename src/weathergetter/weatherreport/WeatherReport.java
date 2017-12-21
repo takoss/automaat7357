@@ -1,4 +1,4 @@
-package main;
+package weathergetter.weatherreport;
 
 import java.util.List;
 
@@ -59,7 +59,7 @@ public class WeatherReport {
         this.forecastThreeDayLowTemps = forecastThreeDayLowTemps;
     }
 
-    static WeatherReport generateMergedCurrAndForecastWeatherReports(
+    public static WeatherReport generateMergedCurrAndForecastWeatherReports(
             WeatherReport current, WeatherReport forecast) {
         WeatherReport newReport = new WeatherReport();
 
@@ -77,7 +77,7 @@ public class WeatherReport {
         this.cityName = cityName;
     }
 
-    String getCityName() {
+    public String getCityName() {
         return this.cityName;
     }
 

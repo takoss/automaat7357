@@ -1,11 +1,11 @@
-package main;
+package weathergetter.weatherreport;
 
 import java.math.BigDecimal;
 
 /**
  * Created by admin on 28.09.2017.
  */
-class Temperature {
+public class Temperature {
 
     static final int KELVIN = 0;
 

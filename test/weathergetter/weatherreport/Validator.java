@@ -1,4 +1,4 @@
-package main;
+package weathergetter.weatherreport;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,7 +1,8 @@
-package main;
+package weathergetter.weatherreport;
 
 import org.junit.Assert;
 import org.junit.Test;
+import weathergetter.weatherreport.Coordinate;
 
 import java.math.BigDecimal;
 

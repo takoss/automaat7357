@@ -1,15 +1,20 @@
-package main;
+package weathergetter.weatherreport;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import weathergetter.weatherreport.Coordinate;
+import weathergetter.weatherreport.Temperature;
+import weathergetter.weatherreport.WeatherReport;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-class ForecastWeatherSetter {
+public class ForecastWeatherSetter {
 
-    static void setInformationForWeatherReport(JSONObject json, WeatherReport forecastReport) {
+    public static void setInformationForWeatherReport(JSONObject json,
+                                                WeatherReport forecastReport) throws JSONException {
         forecastReport.setCityName(json.getJSONObject("city").getString("name"));
 
         JSONObject coord = json.getJSONObject("city").getJSONObject("coord");
@@ -20,7 +25,7 @@ class ForecastWeatherSetter {
         setThreeDayHighsAndLows(json, forecastReport);
     }
 
-    private static void setThreeDayHighsAndLows(JSONObject json, WeatherReport forecastReport) {
+    private static void setThreeDayHighsAndLows(JSONObject json, WeatherReport forecastReport) throws JSONException {
         JSONArray jsonArray = json.getJSONArray("list");
 
         List<Temperature> highTemps = new ArrayList<>();
